@@ -66,7 +66,7 @@ def INPQ(Delay, coeff):
 def IQ_Frame(fr, FLR, coeff):    
     if FLR < 1:
         FLR = 0;
-    I_IQ_frames = coeff[0]+coeff[1]*fr**2+coeff[2]*fr+coeff[3]*np.log(FLR);
+    I_IQ_frames = coeff[0]+coeff[1]*fr**2+coeff[2]*fr+coeff[3]*np.log(FLR+1);
     
     return I_IQ_frames.clip(min=0, max=68.98)
     
@@ -87,9 +87,13 @@ def VQ(bitrate, NumPixelPerFrame, framerate, TSpacketLossV, TSburstinessV, coeff
      return I_codn.clip(min=0,max=78.78),I_tras
 
 def FrameLR(br, fr, delay, pl):
-
-    AVG_fps = fr*np.exp(-(0.08526 + 0.00073*fr + 1.425e-07*br*fr)*(0.09656*delay - 1.5)*pl);
+    if delay < 16:
+        AVG_fps = fr
+    else:
+        AVG_fps = fr*np.exp(-(0.08526 + 0.00073*fr + 1.425e-04*br*fr)*(0.09656*delay - 1.5)*pl);
     FLR = 100*(fr - AVG_fps)/fr
+    print("AVG_fps:", AVG_fps)
+    print("FLR:", FLR)
     return FLR
 
 def test_model(bitrate, coding_res, flr, PL_UDP, framerate, delay, Iclss, Vclss):
@@ -183,11 +187,12 @@ def test_model(bitrate, coding_res, flr, PL_UDP, framerate, delay, Iclss, Vclss)
         I_codn, I_tras = VQ(bitrate, coding_res, framerate, PL_UDP, 0, VQcoef[2])
         
     R_QoE_1072 = 100 - 0.788*I_codn - 0.896*I_tras - 0.227*I_TVQ - 0.625*I_Frame - 0.848*I_INP;     
+    print(" Quality in R-scale:",R_QoE_1072)  
     R_QoE_1072=R_QoE_1072.clip(min=0, max=78.49)
     print("Overal Quality:",MOSfromR_Value(R_QoE_1072))  
     print("Interaction Quality:",MOSfromR_Value(100-I_INP))  
-    print("Video Unclearness:", MOSfromR_Value(100-I_VU)) ;
-    print("Video Fragmentation:", MOSfromR_Value(100-I_VF)) ;
+   # print("Video Unclearness:", MOSfromR_Value(100-I_VU)) ;
+    #print("Video Fragmentation:", MOSfromR_Value(100-I_VF)) ;
     return MOSfromR_Value(R_QoE_1072)
 
  
