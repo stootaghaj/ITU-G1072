@@ -78,7 +78,7 @@ Please cite the ITU-T Recommendation G.1072 if you use the code or to get more i
     @inproceedings{g1072,
     title={ITU-T Recommendation G.1072: Opinion model predicting gaming quality of experience for cloud gaming services},
     booktitle={International Telecommunication Union},
-    year={2019},
+    year={2020},
     organization={ITU}
     }
 ```
