@@ -35,10 +35,9 @@ def MOSfromR(Q):
     
  
 def TVQ(framerate, FLR, coeff):
-   
-    if FLR < 1:
-        FLR = 0;
+
     IVD= coeff[0]+coeff[1]*framerate**2+coeff[2]*framerate+coeff[3]*np.log(FLR+1)
+    print(IVD)
     return IVD.clip(min=0, max=61.29)
     
 def VF(bitrate, framerate, coding_res, coeff):
@@ -64,10 +63,8 @@ def INPQ(Delay, coeff):
 
 
 def IQ_Frame(fr, FLR, coeff):    
-    if FLR < 1:
-        FLR = 0;
+
     I_IQ_frames = coeff[0]+coeff[1]*fr**2+coeff[2]*fr+coeff[3]*np.log(FLR+1);
-    
     return I_IQ_frames.clip(min=0, max=68.98)
     
 
@@ -149,23 +146,23 @@ def test_model(bitrate, coding_res, flr, PL_UDP, framerate, delay, Iclss, Vclss)
     if Iclss=='Low':
  
      
-        I_Frame = IQ_Frame(bitrate, flr, Icoef[0]);
-        I_TVQ = TVQ(bitrate, flr, TVQcoef[0]);
+        I_Frame = IQ_Frame(framerate, flr, Icoef[0]);
+        I_TVQ = TVQ(framerate, flr, TVQcoef[0]);
         I_INP = INPQ(delay, Inpcoef[0] );
         
         
     elif Iclss=='Medium':
     
 
-        I_Frame = IQ_Frame(bitrate, flr, Icoef[1]);
-        I_TVQ = TVQ(bitrate, flr, TVQcoef[1]);
+        I_Frame = IQ_Frame(framerate, flr, Icoef[1]);
+        I_TVQ = TVQ(framerate, flr, TVQcoef[1]);
         I_INP = INPQ(delay, Inpcoef[1]);
     
     elif Iclss=='High':
             
 
-        I_Frame = IQ_Frame(bitrate, flr, Icoef[2]);
-        I_TVQ = TVQ(bitrate, flr, TVQcoef[2]);
+        I_Frame = IQ_Frame(framerate, flr, Icoef[2]);
+        I_TVQ = TVQ(framerate, flr, TVQcoef[2]);
         I_INP = INPQ(delay, Inpcoef[2]);
     
     if Vclss=='Low':
@@ -185,7 +182,7 @@ def test_model(bitrate, coding_res, flr, PL_UDP, framerate, delay, Iclss, Vclss)
         I_VU = VU(bitrate, framerate, coding_res,VUcoef[2]);
         I_VF = VF(bitrate, framerate, coding_res,VFcoef[2]);
         I_codn, I_tras = VQ(bitrate, coding_res, framerate, PL_UDP, 0, VQcoef[2])
-        
+
     R_QoE_1072 = 100 - 0.788*I_codn - 0.896*I_tras - 0.227*I_TVQ - 0.625*I_Frame - 0.848*I_INP;     
     # the model should over predict or under estimate the quality. 
     R_QoE_1072=R_QoE_1072.clip(min=0, max=78.49)

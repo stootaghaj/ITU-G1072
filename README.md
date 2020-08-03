@@ -47,21 +47,21 @@ The model gives you four estimations:
 #### Example 
 Here you can find an example for a condition with 1 Mbps, 60 fps, packet loss of 5%, delay of 25 ms, Interaction complexity of "High", and Video Complexity of "Low" level:
 ```
-    python G1072.py --bitrate=1 --framerate=60  
-                    --packetloss=5 --packetlossUDP=0  
-                    --delay=25 --coding_res=1920x1080  
-                    --Icomplexity=High --Vcomplexity=Low  
+    python G1072.py --bitrate=2  --framerate=60  
+                    --packetloss=0 --packetlossUDP=0 
+                    --delay=200 --coding_res=1920x1080  
+                    --Icomplexity=High --Vcomplexity=High  
                     --test_type=parameters
 ```
 Output: 
 
  ```
-    ('Overal Quality:', 1.5666227246535545)
-    ('Interaction Quality (delay):', 4.566607804337803)
-    ('Interaction Quality (packetloss):', 1.901996367544)
-    ('Video Quality based on refitted G.1071:', 4.189147506643676)
-    ('Video Unclearness:', 4.390854342067218)
-    ('Video Fragmentation:', 3.838896301125882)
+    ('Overal Quality:', 1.703640262361372)
+    ('Interaction Quality (delay):', 3.1691042828686484)
+    ('Interaction Quality (packetloss):', 4.64)
+    ('Video Quality based on refitted G.1071:', 2.8929607456164215)
+    ('Video Unclearness:', 3.6660390586801817)
+    ('Video Fragmentation:', 2.852382320395556)
  ```
 
 # Prepration 
