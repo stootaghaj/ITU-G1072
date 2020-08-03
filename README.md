@@ -11,8 +11,8 @@ In order to run the code please use run it based on the parameters of the model 
 
 ```
     python G1072.py --bitrate=50  --framerate=60  
-                    --packetloss=0 --packetlossUDP=0 
-                    --delay=400 --coding_res=1920x1080  
+                    --packetloss=0.20 --packetlossUDP=0 
+                    --delay=0 --coding_res=1920x1080  
                     --Icomplexity=High --Vcomplexity=High  
                     --test_type=parameters
 ```
@@ -30,8 +30,8 @@ Please note that the model only works based on the range of parameters used for 
 - Resolution: 1920x1080, 1280x720 or 640×480
 - Video Complexity Class: High, Medium, Low
 - Interaction Sensitivity Class: High, Medium, Low
-- Packetloss (Freezing effect): 0 - 0.5
-- Packetloss (Slicing effect): 0 - 0.5
+- Packetloss (Freezing effect): 0 - 5 (it will be seen as 0 to 5%)
+- Packetloss (Slicing effect): 0 - 2 (it will be seen as 0 to 2%)
 - Delay: 0 - 400
 
 
@@ -43,13 +43,13 @@ The model gives you four estimations:
 - Video Unclearness (based on https://github.com/stootaghaj/GamingVQA)
 
 #### Example 
- ```
+```
     python G1072.py --bitrate=50  --framerate=60  
-                    --packetloss=0 --packetlossUDP=0 
-                    --delay=400 --coding_res=1920x1080  
+                    --packetloss=0.20 --packetlossUDP=0 
+                    --delay=0 --coding_res=1920x1080  
                     --Icomplexity=High --Vcomplexity=High  
                     --test_type=parameters
- ```
+```
 Output: 
 
  ```
@@ -85,10 +85,10 @@ Link to ITU-T Recomendation G.1072: https://www.itu.int/rec/T-REC-G.1072-202001-
 The work has been done within the ITU-T Study Group 12 under work item, G.OMG. Many researchers contributed to this work from TU Berlin, Simula Research Lab, Kingston University, Deutsche Telekom.
 The current code is made available to test the model. It has to be noted that code is different than the original code and might include bugs. Please contact saman.zadtootaghaj@qu.tu-berlin.de if any issues is found. 
 
-Saman Zadtootaghaj
-Steven Schmidt 
-Saeed Shafiee Sabet
-Nabajeet Barman
+- [Steven Schmidt](https://www.qu.tu-berlin.de/menue/team/researchers/steven_schmidt/)
+- [Saman Zadtootaghaj](https://www.qu.tu-berlin.de/menue/team/researchers/zadtootahaj_saman/)
+- [Saeed Shafiee Sabet](https://www.qu.tu-berlin.de/menue/team/researchers/saeed/)
+- [Nabajeet Barman](https://www.kingston.ac.uk/staff/profile/dr-nabajeet-barman-120/)
 
 ## License 
 

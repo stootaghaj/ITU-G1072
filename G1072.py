@@ -11,15 +11,14 @@ Created on Sun Jun  7 13:54:29 2020
 import numpy as np
 import argparse
 
-
             
 def MOSfromR_Value(Q):
     MOS_MAX = 4.64;
     MOS_MIN = 1.3;
     MOS = MOS_MIN + (MOS_MAX-MOS_MIN)/100*Q + Q*(Q-60)*(100-Q)* 7.0e-6
-    return MOS
+    return MOS.clip(min=1.3, max=4.64)
        
-#transform data from MOS to R  for an array of values
+#transform data from R to MOS  for an array of values
 
 def MOSfromR(Q):
     MOS = np.zeros(Q.shape)
@@ -32,7 +31,7 @@ def MOSfromR(Q):
             MOS[i] = MOS_MAX
         else:
             MOS[i] = MOS_MIN
-        return MOS
+        return MOS.clip(min=1.3, max=4.64)
     
  
 def TVQ(framerate, FLR, coeff):
@@ -40,14 +39,13 @@ def TVQ(framerate, FLR, coeff):
     if FLR < 1:
         FLR = 0;
     IVD= coeff[0]+coeff[1]*framerate**2+coeff[2]*framerate+coeff[3]*np.log(FLR+1)
-
-    return IVD.clip(min=0)
+    return IVD.clip(min=0, max=61.29)
     
 def VF(bitrate, framerate, coding_res, coeff):
     bitrate = bitrate*1000    
     bitperpixel = bitrate/(framerate*coding_res)
     IVF = coeff[0] + coeff[1]*np.log(bitperpixel*bitrate) + coeff[2]*bitrate
-    return IVF.clip(min=0, max=68.52)
+    return IVF.clip(min=0, max=75.94)
     
     
 def VU(bitrate, framerate, coding_res, coeff):
@@ -55,14 +53,14 @@ def VU(bitrate, framerate, coding_res, coeff):
     bitperpixel = bitrate/(framerate*coding_res)
     scaleratio = coding_res/(1080*1920)
     IVU = coeff[0] + coeff[1]*np.log(bitperpixel*bitrate) + coeff[2]*np.log(scaleratio)
-    return IVU.clip(min=0, max=67.90)
+    return IVU.clip(min=0, max=68.08)
 
     
 def INPQ(Delay, coeff):
         
     IQR= coeff[0]/(1+np.exp(coeff[1]-coeff[2]*Delay))+coeff[3]    
     
-    return IQR.clip(min=0)
+    return IQR.clip(min=0, max=68.98)
 
 
 def IQ_Frame(fr, FLR, coeff):    
@@ -70,7 +68,7 @@ def IQ_Frame(fr, FLR, coeff):
         FLR = 0;
     I_IQ_frames = coeff[0]+coeff[1]*fr**2+coeff[2]*fr+coeff[3]*np.log(FLR);
     
-    return I_IQ_frames.clip(min=0)
+    return I_IQ_frames.clip(min=0, max=68.98)
     
 
 def VQ(bitrate, NumPixelPerFrame, framerate, TSpacketLossV, TSburstinessV, coeff):
@@ -86,7 +84,7 @@ def VQ(bitrate, NumPixelPerFrame, framerate, TSpacketLossV, TSburstinessV, coeff
      LossMagnitudeE = coeff[12]*np.exp(coeff[13]*LossMagnitudeNP) - coeff[12]
      I_tras = coeff[7]*np.log(coeff[8]*LossMagnitudeE+1.)
 
-     return I_codn,I_tras
+     return I_codn.clip(min=0,max=78.78),I_tras
 
 def FrameLR(br, fr, delay, pl):
 
@@ -185,7 +183,7 @@ def test_model(bitrate, coding_res, flr, PL_UDP, framerate, delay, Iclss, Vclss)
         I_codn, I_tras = VQ(bitrate, coding_res, framerate, PL_UDP, 0, VQcoef[2])
         
     R_QoE_1072 = 100 - 0.788*I_codn - 0.896*I_tras - 0.227*I_TVQ - 0.625*I_Frame - 0.848*I_INP;     
-#    print("Overal Quality:",R_QoE_1072)  
+    R_QoE_1072=R_QoE_1072.clip(min=0, max=78.49)
     print("Overal Quality:",MOSfromR_Value(R_QoE_1072))  
     print("Interaction Quality:",MOSfromR_Value(100-I_INP))  
     print("Video Unclearness:", MOSfromR_Value(100-I_VU)) ;
