@@ -2,7 +2,7 @@
 
 This repo provides the implementation of ITU-T G.1072 "Opinion model predicting gaming quality of experience for cloud gaming services" based on network and comperession parameters. 
 
-- The G.1072 Planning model can predict the cloud gaming video quality based on the video paramters, bitrate, framerate, encoding resolution, gaming video complexity and network parameters, packetloss, delay. 
+- The G.1072 Planning model that can predict the cloud gaming quality based on the video paramters, bitrate, framerate, encoding resolution, gaming video complexity and network parameters, packetloss, delay on MOS scale from 1 to 5 (5 best, 1 worse). 
 
 ## How to Use
 In order to run the code please use run it based on the parameters of the model as follows:
