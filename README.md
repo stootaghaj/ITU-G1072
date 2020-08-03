@@ -38,25 +38,30 @@ Please note that the model only works based on the range of parameters used for 
 ### Output of the model
 The model gives you four estimations: 
 - Overall Quality
-- Interaction Quality (known as Input Quality in G,1072)
+- Interaction Quality (known as Input Quality in G,1072) due to delay
+- Interaction Quality (known as Input Quality in G,1072) due to packet loss (freezing effect/frame loss)
+- Video Quality based on refitted ITU-T Recommendation G.1071 
 - Video Fragementation (based on https://github.com/stootaghaj/GamingVQA)
 - Video Unclearness (based on https://github.com/stootaghaj/GamingVQA)
 
 #### Example 
+Here you can find an example for a condition with 1 Mbps, 60 fps, packet loss of 5%, delay of 25 ms, Interaction complexity of "High", and Video Complexity of "Low" level:
 ```
-    python G1072.py --bitrate=50  --framerate=60  
-                    --packetloss=0.20 --packetlossUDP=0 
-                    --delay=0 --coding_res=1920x1080  
-                    --Icomplexity=High --Vcomplexity=High  
+    python G1072.py --bitrate=1 --framerate=60  
+                    --packetloss=5 --packetlossUDP=0  
+                    --delay=25 --coding_res=1920x1080  
+                    --Icomplexity=High --Vcomplexity=Low  
                     --test_type=parameters
 ```
 Output: 
 
  ```
-    ('Overal Quality:', 4.582801247415103)
-    ('Quality of Interaction Quality:', 4.6229955301830845)
-    ('Video Unclearness:', 4.607621778600887)
-    ('Video Fragmentation:', 4.471200161599724)
+    ('Overal Quality:', 1.5666227246535545)
+    ('Interaction Quality (delay):', 4.566607804337803)
+    ('Interaction Quality (packetloss):', 1.901996367544)
+    ('Video Quality based on refitted G.1071:', 4.189147506643676)
+    ('Video Unclearness:', 4.390854342067218)
+    ('Video Fragmentation:', 3.838896301125882)
  ```
 
 # Prepration 

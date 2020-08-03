@@ -6,7 +6,7 @@ Created on Sun Jun  7 13:54:29 2020
 @author: saman
 """
 
-#from __future__ import division
+from __future__ import division
 
 import numpy as np
 import argparse
@@ -87,13 +87,13 @@ def VQ(bitrate, NumPixelPerFrame, framerate, TSpacketLossV, TSburstinessV, coeff
      return I_codn.clip(min=0,max=78.78),I_tras
 
 def FrameLR(br, fr, delay, pl):
+    # note that the coef 1.425e-07 has been updated to 1.425e-07... It will be corrected next ITU meeting.
     if delay < 16:
         AVG_fps = fr
     else:
         AVG_fps = fr*np.exp(-(0.08526 + 0.00073*fr + 1.425e-04*br*fr)*(0.09656*delay - 1.5)*pl);
     FLR = 100*(fr - AVG_fps)/fr
-    print("AVG_fps:", AVG_fps)
-    print("FLR:", FLR)
+    #print("Measured Frame Loss Rate:", FLR)
     return FLR
 
 def test_model(bitrate, coding_res, flr, PL_UDP, framerate, delay, Iclss, Vclss):
@@ -187,12 +187,15 @@ def test_model(bitrate, coding_res, flr, PL_UDP, framerate, delay, Iclss, Vclss)
         I_codn, I_tras = VQ(bitrate, coding_res, framerate, PL_UDP, 0, VQcoef[2])
         
     R_QoE_1072 = 100 - 0.788*I_codn - 0.896*I_tras - 0.227*I_TVQ - 0.625*I_Frame - 0.848*I_INP;     
-    print(" Quality in R-scale:",R_QoE_1072)  
+    # the model should over predict or under estimate the quality. 
     R_QoE_1072=R_QoE_1072.clip(min=0, max=78.49)
-    print("Overal Quality:",MOSfromR_Value(R_QoE_1072))  
-    print("Interaction Quality:",MOSfromR_Value(100-I_INP))  
-   # print("Video Unclearness:", MOSfromR_Value(100-I_VU)) ;
-    #print("Video Fragmentation:", MOSfromR_Value(100-I_VF)) ;
+    
+    print("Overal Quality:", MOSfromR_Value(R_QoE_1072))  
+    print("Interaction Quality (delay):",MOSfromR_Value(100-I_INP)) 
+    print("Interaction Quality (packetloss):",MOSfromR_Value(100-I_Frame)) 
+    print("Video Quality based on refitted G.1071:", MOSfromR_Value(100-I_codn)) ;
+    print("Video Unclearness:", MOSfromR_Value(100-I_VU)) ;
+    print("Video Fragmentation:", MOSfromR_Value(100-I_VF)) ;
     return MOSfromR_Value(R_QoE_1072)
 
  
