@@ -1,12 +1,7 @@
-#!/usr/bin/env python2
-# -*- coding: utf-8 -*-
+#!/usr/bin/env python3
 """
-Created on Sun Jun  7 13:54:29 2020
-
-@author: saman
+G.1072 Implementation
 """
-
-from __future__ import division
 
 import numpy as np
 import argparse
