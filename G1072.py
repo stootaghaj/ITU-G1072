@@ -70,7 +70,7 @@ def VQ(bitrate, NumPixelPerFrame, framerate, TSpacketLossV, TSburstinessV, coeff
      ContentComplexity = coeff[4]*np.exp(coeff[5]*BitPerPixel) + coeff[6]
      
      QcodV = coeff[0]*np.exp(coeff[1]*BitPerPixel) + coeff[2]*ContentComplexity + coeff[3]
-     #TSburstinessV=0;
+     TSburstinessV=0;
      I_codn = np.minimum(QcodV, 65.)
      LossMagnitudeNP = (coeff[9]-I_codn)*TSpacketLossV/(I_codn*(coeff[10]*TSburstinessV+coeff[11])+TSpacketLossV)
      LossMagnitudeE = coeff[12]*np.exp(coeff[13]*LossMagnitudeNP) - coeff[12]
