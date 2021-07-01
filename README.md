@@ -10,7 +10,7 @@ In order to run the code please use run it based on the parameters of the model 
 - Test the model based on the parameters, which requires specifying all video parameters, bitrate, framerate, ecoding resolution (width x height,e.g. 1920x1080) and video complexity (Vcomplexity) level ('High','Medium' ,'Low') and network parameters packetloss (if freezing is the effect), packetlossUDP (if slicing is the packet loss effect), delay and delay (interaction) complexity (Icomplexity) .  To do so, you can run it as the following example:
 
 ```
-    python G1072.py --bitrate=50  --framerate=60  
+    python3 G1072.py --bitrate=50  --framerate=60  
                     --packetloss=0.20 --packetlossUDP=0 
                     --delay=0 --coding_res=1920x1080  
                     --Icomplexity=High --Vcomplexity=High  
@@ -19,7 +19,7 @@ In order to run the code please use run it based on the parameters of the model 
 
  For more help run:
  ```
-    python test.py -h
+    python3 test.py -h
 ```
 
 ### Application Range of Parameters 
@@ -47,7 +47,7 @@ The model gives you four estimations:
 #### Example 
 Here you can find an example for a condition with 1 Mbps, 60 fps, packet loss of 5%, delay of 25 ms, Interaction complexity of "High", and Video Complexity of "Low" level:
 ```
-    python G1072.py --bitrate=2  --framerate=60  
+    python3 G1072.py --bitrate=2  --framerate=60  
                     --packetloss=0 --packetlossUDP=0 
                     --delay=200 --coding_res=1920x1080  
                     --Icomplexity=High --Vcomplexity=High  
@@ -65,12 +65,21 @@ Output:
  ```
 
 # Prepration 
-Install python and pip, if they are not already installed. Follow the platform specific installation instructions. The following step should be performed to prepare the setup.
+Install python3 and pip, if they are not already installed. Follow the platform specific installation instructions. The following step should be performed to prepare the setup.
 ```
     git clone https://github.com/stootaghaj/ITU-G1072.git 
-    pip install -r requirements.txt
+    cd ITU-G1072
+    pip3 install -r requirements.txt
 ```
 
+# Testing
+
+Run Pytest:
+
+```
+pip3 install -r requirements.dev.txt
+python3 -m pytest test/test.py
+```
 
 ## Citation 
 Please cite the ITU-T Recommendation G.1072 if you use the code or to get more insight about the model:
