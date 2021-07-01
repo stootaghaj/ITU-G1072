@@ -45,7 +45,7 @@ The model gives you four estimations:
 - Video Unclearness (based on https://github.com/stootaghaj/GamingVQA)
 
 #### Example 
-Here you can find an example for a condition with 1 Mbps, 60 fps, packet loss of 5%, delay of 25 ms, Interaction complexity of "High", and Video Complexity of "Low" level:
+Here you can find an example for a condition with 2 Mbps, 60 fps, packet loss of 0%, delay of 200 ms, Interaction complexity of "High", and Video Complexity of "High" level:
 ```
     python3 G1072.py --bitrate=2  --framerate=60  
                     --packetloss=0 --packetlossUDP=0 
