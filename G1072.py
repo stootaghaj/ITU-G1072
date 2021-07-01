@@ -26,7 +26,7 @@ def MOSfromR(Q):
             MOS[i] = MOS_MAX
         else:
             MOS[i] = MOS_MIN
-        return MOS.clip(min=1.3, max=4.64)
+    return MOS.clip(min=1.3, max=4.64)
     
  
 def TVQ(framerate, FLR, coeff):
