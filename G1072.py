@@ -6,6 +6,91 @@ G.1072 Implementation
 import numpy as np
 import argparse
 
+# VF Video Fragementation coef
+VFcoef = [
+    [2.1, -5.426, 0.0005258],
+    [13.79, -8.017, 0.0005442],
+    [11.21, -10.59, 0.0006314],
+]
+
+# VU Video Unclearness coef
+VUcoef = [[4.299, -2.016, -17.99], [18.58, -3.422, -15.38], [17.13, -4.494, -7.844]]
+
+# VQ Video Quality coef based on the updated coef of G.1071
+VQcoef = [
+    [
+        5.25052380e01,
+        -2.80170325e01,
+        -2.68405109e00,
+        5.46647668e00,
+        1.24214486e01,
+        -2.80191642e01,
+        2.15799183e-01,
+        1.97091683e01,
+        3.35830546e03,
+        2.83699150e01,
+        4.60029723e-04,
+        2.34972977e-02,
+        1.64739513e-03,
+        8.95913579e-02,
+    ],
+    [
+        3.79882097e01,
+        -1.37207634e01,
+        8.57836656e00,
+        3.26581290e00,
+        6.83275916e00,
+        -1.27997288e02,
+        4.79594798e-01,
+        6.12878511e-01,
+        1.39396166e-03,
+        5.62892863e01,
+        4.60000000e-04,
+        4.75669545e-03,
+        5.81327058e-02,
+        2.38014343e00,
+    ],
+    [
+        4.77463038e01,
+        -1.20699723e01,
+        9.05167501e00,
+        3.41919377e00,
+        7.62306351e00,
+        -1.67837954e02,
+        7.60332685e-02,
+        1.57176227e00,
+        3.68595885e00,
+        7.40570804e01,
+        4.59999348e-04,
+        4.06000335e-03,
+        2.58892015e-08,
+        8.68406685e-01,
+    ],
+]
+# TVQ temporal video quality coef
+
+TVQcoef = [
+    [29.13, 0.01344, -1.283, 6.724],
+    [47.03, 0.01747, -1.823, 10.7],
+    [47.03, 0.01747, -1.823, 10.7],
+]
+
+# VD Video Discontinuity coef
+
+Icoef = [
+    [23.43, 0.008574, -0.9253, 5.855],
+    [54.71, 0.02589, -2.485, 9.306],
+    [54.71, 0.02589, -2.485, 9.306],
+]
+
+# INP Input Quality Coef
+
+Inpcoef = [
+    [47.97, 2.097, 0.01073, -4.567],
+    [90, 1.191, 0.009775, -18.73],
+    [90, 1.191, 0.009775, -18.73],
+]
+
 
 def MOSfromR_Value(Q):
     MOS_MAX = 4.64
@@ -123,130 +208,17 @@ def test_model(bitrate, coding_res, flr, PL_UDP, framerate, delay, Iclss, Vclss)
 
     # set the coefficients
 
-    # VF Video Fragementation coef
-    VFcoef = [
-        [2.1, -5.426, 0.0005258],
-        [13.79, -8.017, 0.0005442],
-        [11.21, -10.59, 0.0006314],
-    ]
-
-    # VU Video Unclearness coef
-
-    VUcoef = [[4.299, -2.016, -17.99], [18.58, -3.422, -15.38], [17.13, -4.494, -7.844]]
-
-    # VQ Video Quality coef based on the updated coef of G.1071
-
-    VQcoef = [
-        [
-            5.25052380e01,
-            -2.80170325e01,
-            -2.68405109e00,
-            5.46647668e00,
-            1.24214486e01,
-            -2.80191642e01,
-            2.15799183e-01,
-            1.97091683e01,
-            3.35830546e03,
-            2.83699150e01,
-            4.60029723e-04,
-            2.34972977e-02,
-            1.64739513e-03,
-            8.95913579e-02,
-        ],
-        [
-            3.79882097e01,
-            -1.37207634e01,
-            8.57836656e00,
-            3.26581290e00,
-            6.83275916e00,
-            -1.27997288e02,
-            4.79594798e-01,
-            6.12878511e-01,
-            1.39396166e-03,
-            5.62892863e01,
-            4.60000000e-04,
-            4.75669545e-03,
-            5.81327058e-02,
-            2.38014343e00,
-        ],
-        [
-            4.77463038e01,
-            -1.20699723e01,
-            9.05167501e00,
-            3.41919377e00,
-            7.62306351e00,
-            -1.67837954e02,
-            7.60332685e-02,
-            1.57176227e00,
-            3.68595885e00,
-            7.40570804e01,
-            4.59999348e-04,
-            4.06000335e-03,
-            2.58892015e-08,
-            8.68406685e-01,
-        ],
-    ]
-    # TVQ temporal video quality coef
-
-    TVQcoef = [
-        [29.13, 0.01344, -1.283, 6.724],
-        [47.03, 0.01747, -1.823, 10.7],
-        [47.03, 0.01747, -1.823, 10.7],
-    ]
-
-    # VD Video Discontinuity coef
-
-    Icoef = [
-        [23.43, 0.008574, -0.9253, 5.855],
-        [54.71, 0.02589, -2.485, 9.306],
-        [54.71, 0.02589, -2.485, 9.306],
-    ]
-
-    # INP Input Quality Coef
-
-    Inpcoef = [
-        [47.97, 2.097, 0.01073, -4.567],
-        [90, 1.191, 0.009775, -18.73],
-        [90, 1.191, 0.009775, -18.73],
-    ]
-
     # choose the righ coef for the 1072 based on the class complexity
+    Iclss_idx = ["Low", "Medium", "High"].index(Iclss)
+    Vclss_idx = ["Low", "Medium", "High"].index(Vclss)
 
-    if Iclss == "Low":
+    I_Frame = IQ_Frame(framerate, flr, Icoef[Iclss_idx])
+    I_TVQ = TVQ(framerate, flr, TVQcoef[Iclss_idx])
+    I_INP = INPQ(delay, Inpcoef[Iclss_idx])
 
-        I_Frame = IQ_Frame(framerate, flr, Icoef[0])
-        I_TVQ = TVQ(framerate, flr, TVQcoef[0])
-        I_INP = INPQ(delay, Inpcoef[0])
-
-    elif Iclss == "Medium":
-
-        I_Frame = IQ_Frame(framerate, flr, Icoef[1])
-        I_TVQ = TVQ(framerate, flr, TVQcoef[1])
-        I_INP = INPQ(delay, Inpcoef[1])
-
-    elif Iclss == "High":
-
-        I_Frame = IQ_Frame(framerate, flr, Icoef[2])
-        I_TVQ = TVQ(framerate, flr, TVQcoef[2])
-        I_INP = INPQ(delay, Inpcoef[2])
-
-    if Vclss == "Low":
-
-        I_VU = VU(bitrate, framerate, coding_res, VUcoef[0])
-        I_VF = VF(bitrate, framerate, coding_res, VFcoef[0])
-        I_codn, I_tras = VQ(bitrate, coding_res, framerate, PL_UDP, 0, VQcoef[0])
-
-    elif Vclss == "Medium":
-
-        I_VU = VU(bitrate, framerate, coding_res, VUcoef[1])
-        I_VF = VF(bitrate, framerate, coding_res, VFcoef[1])
-        I_codn, I_tras = VQ(bitrate, coding_res, framerate, PL_UDP, 0, VQcoef[1])
-
-    elif Vclss == "High":
-
-        I_VU = VU(bitrate, framerate, coding_res, VUcoef[2])
-        I_VF = VF(bitrate, framerate, coding_res, VFcoef[2])
-        I_codn, I_tras = VQ(bitrate, coding_res, framerate, PL_UDP, 0, VQcoef[2])
+    I_VU = VU(bitrate, framerate, coding_res, VUcoef[Vclss_idx])
+    I_VF = VF(bitrate, framerate, coding_res, VFcoef[Vclss_idx])
+    I_codn, I_tras = VQ(bitrate, coding_res, framerate, PL_UDP, 0, VQcoef[Vclss_idx])
 
     R_QoE_1072 = (
         100
