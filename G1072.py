@@ -43,7 +43,6 @@ def TVQ(framerate, FLR, coeff):
         + coeff[2] * framerate
         + coeff[3] * np.log(FLR + 1)
     )
-    print(IVD)
     return IVD.clip(min=0, max=61.29)
 
 
