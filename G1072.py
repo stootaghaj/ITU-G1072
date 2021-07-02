@@ -204,8 +204,11 @@ def FrameLR(br, fr, delay, pl):
     return FLR
 
 
-def test_model(bitrate, coding_res, flr, PL_UDP, framerate, delay, Iclss, Vclss):
-
+def calculate_g1072(bitrate, coding_res, flr, PL_UDP, framerate, delay, Iclss, Vclss):
+    """
+    Calculate the G.1072 score and return the overall quality as well as a dict with
+    diagnostic values.
+    """
     # set the coefficients
 
     # choose the righ coef for the 1072 based on the class complexity
@@ -231,13 +234,16 @@ def test_model(bitrate, coding_res, flr, PL_UDP, framerate, delay, Iclss, Vclss)
     # the model should over predict or under estimate the quality.
     R_QoE_1072 = R_QoE_1072.clip(min=0, max=78.49)
 
-    print("Overal Quality:", MOSfromR_Value(R_QoE_1072))
-    print("Interaction Quality (delay):", MOSfromR_Value(100 - I_INP))
-    print("Interaction Quality (packetloss):", MOSfromR_Value(100 - I_Frame))
-    print("Video Quality based on refitted G.1071:", MOSfromR_Value(100 - I_codn))
-    print("Video Unclearness:", MOSfromR_Value(100 - I_VU))
-    print("Video Fragmentation:", MOSfromR_Value(100 - I_VF))
-    return MOSfromR_Value(R_QoE_1072)
+    diagnostics = {
+        "overall_quality": MOSfromR_Value(R_QoE_1072),
+        "interaction_quality_delay": MOSfromR_Value(100 - I_INP),
+        "interaction_quality_packetloss": MOSfromR_Value(100 - I_Frame),
+        "video_quality_based_on_refitted_g1071": MOSfromR_Value(100 - I_codn),
+        "video_unclearness": MOSfromR_Value(100 - I_VU),
+        "video_fragmentation": MOSfromR_Value(100 - I_VF),
+    }
+
+    return MOSfromR_Value(R_QoE_1072), diagnostics
 
 
 def test_para(
@@ -253,7 +259,7 @@ def test_para(
     wh = coding_res.split("x")
     dim = int(wh[0]) * int(wh[1])
     FLR = FrameLR(bitrate, framerate, delay, packetloss)
-    return test_model(
+    return calculate_g1072(
         bitrate, dim, FLR, packetlossUDP, framerate, delay, Icomplexity, Vcomplexity
     )
 
@@ -329,7 +335,7 @@ if __name__ == "__main__":
 
     values = parser.parse_args()
 
-    test_para(
+    overall_quality, diagnostics = test_para(
         values.bitrate,
         values.coding_res,
         values.packetloss,
@@ -339,3 +345,10 @@ if __name__ == "__main__":
         values.Icomplexity,
         values.Vcomplexity,
     )
+
+    print("Overall Quality:", diagnostics['overall_quality'])
+    print("Interaction Quality (delay):", diagnostics['interaction_quality_delay'])
+    print("Interaction Quality (packetloss):", diagnostics['interaction_quality_packetloss'])
+    print("Video Quality based on refitted G.1071:", diagnostics['video_quality_based_on_refitted_g1071'])
+    print("Video Unclearness:", diagnostics['video_unclearness'])
+    print("Video Fragmentation:", diagnostics['video_fragmentation'])
