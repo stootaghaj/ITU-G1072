@@ -14,10 +14,10 @@ def MOSfromR_Value(Q):
     return MOS.clip(min=1.3, max=4.64)
 
 
-# transform data from R to MOS  for an array of values
-
-
 def MOSfromR(Q):
+    """
+    transform data from R to MOS for an array of values
+    """
     MOS = np.zeros(Q.shape)
     MOS_MAX = 4.64
     MOS_MIN = 1.3
