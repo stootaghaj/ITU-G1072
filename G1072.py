@@ -265,18 +265,14 @@ if __name__ == "__main__":
     parser.add_argument(
         "-br",
         "--bitrate",
-        action="store",
-        dest="bitrate",
-        default=1000,
-        help="Specify the bitrate of video",
+        default=1.0,
+        help="Specify the bitrate of video in MBit/s",
         type=float,
     )
 
     parser.add_argument(
         "-re",
         "--coding_res",
-        action="store",
-        dest="coding_res",
         default="1920x1080",
         help="Specify the coding resulotion of video",
     )
@@ -284,41 +280,33 @@ if __name__ == "__main__":
     parser.add_argument(
         "-pl",
         "--packetloss",
-        action="store",
-        dest="packetloss",
-        default=0,
-        help="Specify the packetloss of network in case of freezing",
+        default=0.0,
+        help="Specify the packet loss percentage of network in case of freezing",
         type=float,
     )
 
     parser.add_argument(
         "-plu",
         "--packetlossUDP",
-        action="store",
-        dest="packetlossUDP",
-        default=0,
-        help="Specify the packetloss of network in case of Slicing",
+        default=0.0,
+        help="Specify the packet loss percentage of network in case of slicing",
         type=float,
     )
 
     parser.add_argument(
         "-fr",
         "--framerate",
-        action="store",
-        dest="framerate",
-        default=60,
-        help="Specify the framelossrate of video",
-        type=int,
+        default=60.0,
+        help="Specify the framerate of video",
+        type=float,
     )
 
     parser.add_argument(
         "-dl",
         "--delay",
-        action="store",
-        dest="delay",
-        default=100,
-        help="Specify the delay of network",
-        type=int,
+        default=100.0,
+        help="Specify the delay of network in milliseconds",
+        type=float,
     )
 
     parser.add_argument(
@@ -339,37 +327,15 @@ if __name__ == "__main__":
         help="Specify the video complexity class of model, Low, Medium, High",
     )
 
-    parser.add_argument(
-        "-vid",
-        "--video",
-        action="store",
-        dest="video",
-        default=r"CSGO_30fps_30sec_Part1_640x480_400_x264.mp4",
-        help="Number of Images",
-    )
-
-    parser.add_argument(
-        "-t",
-        "--test_type",
-        action="store",
-        dest="test_type",
-        default="video",
-        help="Option to",
-    )
-
     values = parser.parse_args()
 
-    if values.test_type == "parameters":
-        test_para(
-            values.bitrate,
-            values.coding_res,
-            values.packetloss,
-            values.packetlossUDP,
-            values.framerate,
-            values.delay,
-            values.Icomplexity,
-            values.Vcomplexity,
-        )
-
-    else:
-        print("No such option")
+    test_para(
+        values.bitrate,
+        values.coding_res,
+        values.packetloss,
+        values.packetlossUDP,
+        values.framerate,
+        values.delay,
+        values.Icomplexity,
+        values.Vcomplexity,
+    )
