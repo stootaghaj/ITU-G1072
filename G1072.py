@@ -232,7 +232,7 @@ def calculate_g1072(bitrate, coding_res, flr, PL_UDP, framerate, delay, Iclss, V
         - 0.848 * I_INP
     )
     # the model should over predict or under estimate the quality.
-    R_QoE_1072 = R_QoE_1072.clip(min=0, max=78.49)
+    R_QoE_1072 = R_QoE_1072.clip(min=0, max=100)
 
     diagnostics = {
         "overall_quality": MOSfromR_Value(R_QoE_1072),
